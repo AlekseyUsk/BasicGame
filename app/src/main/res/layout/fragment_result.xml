@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="28sp"
-        android:text="won_lost" />
+        android:textSize="28sp"/>
     <Button
         android:id="@+id/new_game_button"
         android:layout_width="wrap_content"

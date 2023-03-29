@@ -1,4 +1,4 @@
-package com.bignerdranch.android.basicgame
+package com.bignerdranch.android.basicgame.viewmodel
 
 import androidx.lifecycle.ViewModel
 
@@ -9,7 +9,7 @@ class GameViewModel : ViewModel() {
     var secretWordDisplay = ""                                     // как отображается это слово
     var correctGuesses = ""                                        // правильно
     var incorrectGuesses = ""                                      // не правильно
-    var livesLeft = 8                                              // жизни
+    var livesLeft = 2                                              // жизни
 
     init {
         secretWordDisplay = deriveSecretWorldDisplay()            // определите, как должно отобрадаться секретное слово и обновите экран
@@ -45,15 +45,13 @@ class GameViewModel : ViewModel() {
 
     fun wonLostMessage() : String{
         var message = ""
-        if (isWon()) message = "ТЫ ВЫИГРАЛ"
-        else if (isLost()) message = "ТЫ ПРОИГРАЛ"
+        if (isWon()) message = "Winner Congratulates! "
+        else if (isLost()) message = "Game over! "
         message += "Слово было $secretWord"
         return message         //wonLostMessage() возвращает строку о том, выиграл ли пользователь и каким было секретное слово
     }
 
-
-
-
-
-
+    override fun onCleared() {
+        super.onCleared()
+    }
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bignerdranch.android.basicgame.databinding.FragmentGameBinding
+import com.bignerdranch.android.basicgame.viewmodel.GameViewModel
 
 class GameFragment : Fragment() {
 
