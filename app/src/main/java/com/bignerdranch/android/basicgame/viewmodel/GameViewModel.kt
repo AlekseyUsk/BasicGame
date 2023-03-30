@@ -1,54 +1,78 @@
 package com.bignerdranch.android.basicgame.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
 
-    val words = listOf("Android", "Activity", "Fragment")
-    val secretWord = words.random().uppercase()                    // слово которое пользователь должен угадать
-    var secretWordDisplay = ""                                     // как отображается это слово
-    var correctGuesses = ""                                        // правильно
-    var incorrectGuesses = ""                                      // не правильно
-    var livesLeft = 2                                              // жизни
+    private val words = listOf("Android", "Activity", "Fragment")
+    private val secretWord = words.random().uppercase()
+
+    private var correctGuesses = ""
+
+    private val _gameOver = MutableLiveData<Boolean>()
+    val gameOver : LiveData<Boolean>
+        get() = _gameOver
+
+    private val _secretWordDisplay = MutableLiveData<String>()
+    val secretWordDisplay: LiveData<String>
+        get() = _secretWordDisplay
+
+    private val _incorrectGuesses = MutableLiveData<String>("")
+    val incorrectGuesses: LiveData<String>
+        get() = _incorrectGuesses
+
+    private val _livesLeft = MutableLiveData<Int>(3)
+    val livesLeft: LiveData<Int>
+        get() = _livesLeft
 
     init {
-        secretWordDisplay = deriveSecretWorldDisplay()            // определите, как должно отобрадаться секретное слово и обновите экран
+        _secretWordDisplay.value =
+            deriveSecretWorldDisplay()
     }
 
-    fun deriveSecretWorldDisplay(): String {                     // это создает строку для того, как секретное слово должно отображаться на экране
+   private fun deriveSecretWorldDisplay(): String {
         var display = ""
         secretWord.forEach {
-            display += checkLetter(it.toString())                //Вызовите check Letter для каждой буквы в секретном слове
-        }                                                        // и добавьте ее возвращаемое значение в конец отображаемой переменной
+            display += checkLetter(it.toString())
+        }
         return display
     }
 
-    fun checkLetter(str: String) = when (correctGuesses.contains(str)) { //Это проверяет, содержит ли секретное слово букву, которую угадал пользователь,
-        true -> str                                                      // если да, то возвращает букву. Если нет, то он возвращает "_"
-        false -> ""
-    }
+   private fun checkLetter(str: String) =
+        when (correctGuesses.contains(str)) {
+            true -> str
+            false -> ""
+        }
 
-    fun makeGuess(guess: String) {                              //Это вызывается каждый раз, когда пользователь делает предположение
+    fun makeGuess(guess: String) {
         if (guess.length == 1) {
-            if (secretWord.contains(guess)) {      //Для каждого правильного предположения обновляйте правильные догадки и отображайте секретное слово
+            if (secretWord.contains(guess)) {
                 correctGuesses += guess
-                secretWordDisplay = deriveSecretWorldDisplay()
-            } else {                                //За каждое неверное предположение обновляйте неверные догадки и оставляйте их в живых
-                incorrectGuesses += "$guess"
-                livesLeft--
+                _secretWordDisplay.value = deriveSecretWorldDisplay()
+            } else {
+                _incorrectGuesses.value += "$guess"
+                _livesLeft.value = livesLeft.value?.minus(1)
             }
+            if (isWon() || isLost()) _gameOver.value = true
         }
     }
 
-    fun isWon() = secretWord.equals(secretWordDisplay, true) //Игра считается выигранной, если секретный мир соответствует отображаемому секретному слову
-    fun isLost() = livesLeft <= 0                    //Игра проигрывается, когда у пользователя заканчиваются жизни
+   private fun isWon() = secretWord.equals(
+        secretWordDisplay.toString(),
+        true
+    )
 
-    fun wonLostMessage() : String{
+   private fun isLost() =
+        livesLeft.value ?: 0 <= 0
+
+    fun wonLostMessage(): String {
         var message = ""
         if (isWon()) message = "Winner Congratulates! "
         else if (isLost()) message = "Game over! "
         message += "Слово было $secretWord"
-        return message         //wonLostMessage() возвращает строку о том, выиграл ли пользователь и каким было секретное слово
+        return message
     }
 
     override fun onCleared() {
