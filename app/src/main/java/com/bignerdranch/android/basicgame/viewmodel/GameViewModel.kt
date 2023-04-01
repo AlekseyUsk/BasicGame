@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class GameViewModel : ViewModel() {
 
     private val words = listOf("Android", "Activity", "Fragment")
-    private val secretWord = words.random().uppercase()
+    private val secretWord = words.random()
 
     private var correctGuesses = ""
 
@@ -73,6 +73,9 @@ class GameViewModel : ViewModel() {
         else if (isLost()) message = "Game over! "
         message += "Слово было $secretWord"
         return message
+    }
+    fun finishGame(){
+        _gameOver.value = true
     }
 
     override fun onCleared() {

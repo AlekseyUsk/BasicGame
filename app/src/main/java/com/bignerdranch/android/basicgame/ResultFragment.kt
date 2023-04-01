@@ -11,7 +11,6 @@ import com.bignerdranch.android.basicgame.databinding.FragmentResultBinding
 import com.bignerdranch.android.basicgame.viewmodel.ResultViewModel
 import com.bignerdranch.android.basicgame.viewmodel.factory.ResultViewModelFactory
 
-
 class ResultFragment : Fragment() {
 
     private var _binding: FragmentResultBinding? = null
@@ -26,18 +25,14 @@ class ResultFragment : Fragment() {
     ): View? {
         _binding = FragmentResultBinding.inflate(inflater, container, false)
         val view = binding.root
-
         val result = ResultFragmentArgs.fromBundle(requireArguments()).result
-
         viewModelFactory = ResultViewModelFactory(result)
         viewModel = ViewModelProvider(this,viewModelFactory)
             .get(ResultViewModel::class.java)
-        binding.wonLost.text = result
-
+        binding.resultViewModel = viewModel //установил data binding для макета
         click(binding,view)
         return view
     }
-
     fun click(binding: FragmentResultBinding,view: View){
         binding.newGameButton.setOnClickListener {
             view.findNavController().navigate(R.id.action_resultFragment_to_gameFragment)

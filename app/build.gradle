@@ -35,15 +35,13 @@ android {
     // ViewBinding
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
     // Safe Args
     apply plugin: 'androidx.navigation.safeargs'
 }
 
 dependencies {
-
-    //LiveData
-
 
     //навигация
     implementation 'androidx.navigation:navigation-fragment:2.5.3'

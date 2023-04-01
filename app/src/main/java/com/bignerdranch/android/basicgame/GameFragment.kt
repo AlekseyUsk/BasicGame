@@ -23,29 +23,24 @@ class GameFragment : Fragment() {
         _binding = FragmentGameBinding.inflate(inflater, container, false)
         val view = binding.root
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
-    observationOfTheChange()
+
+        binding.gameViewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+    gameOver()
     click()
         return view
     }
-//наблюдение и обновление value у своих View
-    private fun observationOfTheChange(){
-        viewModel.incorrectGuesses.observe(viewLifecycleOwner, Observer { newValue ->
-            binding.incorrectGuesses.text = "incorrectGuesses - неверные догадки $newValue"
-        })
-        viewModel.livesLeft.observe(viewLifecycleOwner, Observer { newValue ->
-            binding.lives.text = "У вас есть $newValue жизни осталось"
-        })
-        viewModel.secretWordDisplay.observe(viewLifecycleOwner, Observer { newValue ->
-            binding.word.text = newValue
-        })
-        viewModel.gameOver.observe(viewLifecycleOwner, Observer { newValue ->
-            if (newValue){
-                val action = GameFragmentDirections.actionGameFragmentToResultFragment(viewModel.wonLostMessage())
-                view?.findNavController()?.navigate(action)
-            }
-        })
-    }
 
+    private fun gameOver() {
+    viewModel.gameOver.observe(viewLifecycleOwner, Observer { newValue ->
+        if (newValue) {
+            val action =
+                GameFragmentDirections.actionGameFragmentToResultFragment(viewModel.wonLostMessage())
+            view?.findNavController()?.navigate(action)
+        }
+    })
+}
     private fun click(){
         binding.guessButton.setOnClickListener {
             viewModel.makeGuess(
