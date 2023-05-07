@@ -54,6 +54,7 @@ class ResultFragment : Fragment() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ResultViewModel(viewModel.result)
+            ResultText(viewModel.result)
             NewGameButton {
                 view.findNavController().navigate(R.id.action_resultFragment_to_gameFragment)
             }
