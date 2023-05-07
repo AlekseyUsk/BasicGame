@@ -4,7 +4,6 @@ plugins {
     // Safe Args
     id 'androidx.navigation.safeargs' version '2.4.2' apply false
 }
-
 android {
     namespace 'com.bignerdranch.android.basicgame'
     compileSdk 33
@@ -34,20 +33,33 @@ android {
     }
     // ViewBinding
     buildFeatures {
+        compose true
         viewBinding = true
         dataBinding = true
     }
+    // compose
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.6"
+    }
+
     // Safe Args
     apply plugin: 'androidx.navigation.safeargs'
 }
 
 dependencies {
 
+    // compose
+    implementation 'androidx.compose.material:material-icons-core:1.4.3'
+    implementation 'androidx.compose.material:material-icons-extended:1.4.3'
+    implementation 'androidx.compose.material:material:1.4.3'
+    implementation 'androidx.compose.ui:ui-tooling:1.4.3'
+    implementation 'androidx.compose.foundation:foundation:1.4.3'
+
     //навигация
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
